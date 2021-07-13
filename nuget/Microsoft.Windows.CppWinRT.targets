@@ -216,12 +216,12 @@ Copyright (C) Microsoft Corporation. All rights reserved.
         <CallTarget Targets="CppWinRTComputeGenerateWindowsMetadata" />
     </Target>
 
-    <!-- This target overrides the GetResolvedWinMD target used to resolve the WinMD for native projects
+    <!-- This target hooks into the GetResolvedWinMD target used to resolve the WinMD for native projects
          so it is aware of the C++/WinRT generated WinMD.
-         Since not every project that consumes C++/WinRT uses it to generate a WinMD,
-         we need to keep the CX logic as well. -->
+         There is no good way to hook GetResolvedWinMD so we use BeforeTargets. -->
     <Target Name="CppWinRTGetResolvedWinMD"
             DependsOnTargets="CppWinRTComputeGetResolvedWinMD"
+            BeforeTargets="GetResolvedWinMD"
             Returns="@(WinMDFullPath)">
 
         <!-- Add C++/WinRT primary WinMD to the WinMDFullPath if CppWinRTGenerateWindowsMetadata is true -->
